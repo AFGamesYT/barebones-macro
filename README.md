@@ -2,7 +2,7 @@
 This is a very simple macro app. It records and <i>(Upcoming)</i> plays macros.   
 It can control your mouse and keyboard.   
 For simplicity, it doesn't have a GUI, so it relies on hotkeys.   
-<i>(Upcoming)</i> It can be customized from the config file.
+It can be customized from the config file.
 # Compability ⚠️
 | OS         | Works?   |
 |------------|----------|
