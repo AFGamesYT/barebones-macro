@@ -10,6 +10,14 @@ For simplicity, it doesn't have a GUI, so it relies on hotkeys.
 | MacOS      | Requires accesibility permissions.  |
 | Linux (X11)| Fully, with no additional setup.  |
 | Linux (Wayland)    | Unsupported. |
+# Install
+
+```
+git clone https://github.com/AFGamesYT/barebones-macro.git
+cd barebones-macro
+pip install -r requirements.txt
+python main.py
+``` 
 
 <p align="right">
   <picture>
