@@ -1,0 +1,28 @@
+# This is the config file
+
+# Here you can change keybinds and the program's behaviour
+
+# To make keybind combinations, connect them with +
+# Example: shift+f10
+
+# Instead of capital letters, write shift+_
+# Example: shift+p
+
+# Instead of ' ', write space
+# Example: space
+
+# If an invalid key bind/combination was entered, the program will raise a ValueError.
+
+# Basic keys:
+# - ctrl
+# - shift
+# - alt
+# - tab
+# - f1 (up to f20)
+# - home
+# - page_up
+
+keybinds:
+  start_recording: ctrl+f1
+  stop_recording: ctrl+f2
+  close_program: ctrl+f3
