@@ -14,7 +14,7 @@
 # If an invalid key bind/combination was entered, the program will raise a ValueError.
 
 # Basic keys:
-# - ctrl
+# - ctrl_l - left control
 # - shift
 # - alt
 # - tab
@@ -22,7 +22,28 @@
 # - home
 # - page_up
 
+# Keybinds:
+# - record: toggles recording
+# - close_program: closes this program
+# - play_latest_macro: plays the latest macro, more specifically, 'macros/latest.bmarco'
+# - play_selected_macro: plays the below selected macro.
+# - stop_macro: stops the marco at any moment
+
+# selected_macro: a path or file name. macro MUST be inside 'macros/'. this is case-sensitive.
+# loop (True or False): whether the macro should loop until stopped.
+
+
 keybinds:
-  start_recording: ctrl+f1
-  stop_recording: ctrl+f2
-  close_program: ctrl+f3
+  record: ctrl_l+f1
+  close_program: ctrl_l+f2
+  play_latest_macro: ctrl_l+f3
+  play_selected_macro: ctrl_l+f4
+  stop_macro: ctrl+f5
+
+selected_macro: 'macros/mycoolmacro.bmacro'
+loop: false
+
+# also this can be written as
+# selected_macro: 'mycoolmacro'
+# or
+# selected_macro: 'mycoolmacro.bmacro'
