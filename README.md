@@ -13,6 +13,9 @@ It can be customized from the config file.
 | Linux (Wayland)    | Unsupported. |
 # Install
 
+To proceed with the setup, you need to have *python 3.10+* installed on your machine.
+
+## Setup
 ```
 git clone https://github.com/AFGamesYT/barebones-macro.git
 cd barebones-macro
