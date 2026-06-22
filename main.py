@@ -1,12 +1,10 @@
-import sys
-
 from pynput import mouse, keyboard
 from datetime import datetime
 from time import time, sleep
 from os import makedirs
-import yaml
 from threading import Thread
-from pathlib import Path
+
+import os, yaml, sys
 
 makedirs("macros", exist_ok=True)
 
@@ -22,13 +20,31 @@ pressed_keys = set()
 k_controller = keyboard.Controller()
 m_controller = mouse.Controller()
 
-if Path("config.yaml").exists():
-    with open("config.yaml", "r") as f:
-        config = yaml.safe_load(f)
-else:
-    raise FileNotFoundError("Config file wasn't found. Check, if it's in the same directory as main.py")
+try:
+    with open("config.yaml", "r") as cfg:
+        config = yaml.safe_load(cfg)
+
+        if not config: raise ValueError("config.yaml is empty.")
+except FileNotFoundError:
+    raise FileNotFoundError("config.yaml wasn't found. Make sure it exists, and is in the same directory as main.py")
 
 
+def handles_crash(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as err:
+            print(f"Error in {func.__name__}: {type(err).__name__}: {err}")
+
+            if monitoring and buffer:
+                print("The current recording is saved:")
+                save_macro()
+
+            os._exit(1) # noqa
+
+    return wrapper
+
+@handles_crash
 def parse_key(key_name):
     if len(key_name) == 1:
         return keyboard.KeyCode.from_char(key_name)
@@ -37,6 +53,8 @@ def parse_key(key_name):
             return getattr(keyboard.Key, key_name)
         else:
             raise ValueError(f"Invalid keybind in config.yaml: '{key_name}'")
+
+
 
 # this jumbled up thing gets keys from the config
 record_keys = {parse_key(k) for k in config["keybinds"]["record"].lower().replace(" ", "").split("+")}
@@ -48,6 +66,7 @@ stop_macro_keys = {parse_key(k) for k in config["keybinds"]["stop_macro"].lower(
 selected_macro_path = config["selected_macro"]
 loop = config["loop"]
 
+@handles_crash
 def save_macro():
     global buffer
 
@@ -62,6 +81,7 @@ def save_macro():
 
     print(f"Wrote macro to '{macro_path}' and 'macros/latest.bmacro'")
 
+@handles_crash
 def play_macro(path):
     global macro_playing
 
@@ -100,7 +120,8 @@ def play_macro(path):
     print("Macro finished playing.")
     macro_playing = False
 
-def on_move(x, y):
+@handles_crash
+def on_move(x, y, *_):
     global last_command_time, last_command
 
     if monitoring:
@@ -116,7 +137,8 @@ def on_move(x, y):
         buffer.append(f"MOVE {x} {y}\n")
         last_command = "MOVE"
 
-def on_click(x, y, button, pressed):
+@handles_crash
+def on_click(x, y, button, pressed, *_):
     global last_command_time, last_command
 
     if monitoring:
@@ -130,7 +152,8 @@ def on_click(x, y, button, pressed):
         buffer.append(f"CLICK {x} {y} {button} {pressed}\n")
         last_command = "CLICK"
 
-def on_scroll(x, y, dx, dy):
+@handles_crash
+def on_scroll(x, y, dx, dy, *_):
     global last_command_time, last_command
 
     if monitoring:
@@ -145,14 +168,8 @@ def on_scroll(x, y, dx, dy):
         last_command = "SCROLL"
 
 
-mouse_listener = mouse.Listener(
-    on_move=on_move,
-    on_click=on_click,
-    on_scroll=on_scroll
-)
-
-
-def on_press(key):
+@handles_crash
+def on_press(key, *_):
     global last_command_time, last_command, buffer, monitoring, macro_playing
 
     pressed_keys.add(key)
@@ -186,7 +203,6 @@ def on_press(key):
             buffer = []
 
             print("Started recording macro.")
-
 
     if not monitoring and not macro_playing:
         if play_latest_keys == pressed_keys:
@@ -226,10 +242,10 @@ def on_press(key):
 
         keyboard_listener.stop()
         mouse_listener.stop()
-        sys.exit()
+        sys.exit(0)
 
-
-def on_release(key):
+@handles_crash
+def on_release(key, *_):
     global monitoring, buffer, last_command_time, last_command, pressed_keys
 
     pressed_keys = set()
@@ -246,13 +262,22 @@ def on_release(key):
         last_command = "RELEASE"
 
 
+mouse_listener = mouse.Listener(
+    on_move=on_move,
+    on_click=on_click,
+    on_scroll=on_scroll
+)
+
 keyboard_listener = keyboard.Listener(
     on_press=on_press,
     on_release=on_release
 )
 
+
 keyboard_listener.start()
 mouse_listener.start()
+
+print("Started.")
 
 keyboard_listener.join()
 mouse_listener.join()

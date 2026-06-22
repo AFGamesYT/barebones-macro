@@ -20,6 +20,11 @@ pip install -r requirements.txt
 python main.py
 ``` 
 
+# Caveats ⚠️
+To change between macros, you have to restart the program.   
+Ctrl+number key combinations are unsupported.   
+A long recording may weigh a lot.   
+
 <p align="right">
   <picture>
     <source media="(prefers-color-scheme: dark)"

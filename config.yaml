@@ -14,36 +14,38 @@
 # If an invalid key bind/combination was entered, the program will raise a ValueError.
 
 # Basic keys:
-# - ctrl_l - left control
-# - shift
-# - alt
+# - ctrl_l   ⚠️ WRITING 'ctrl'    INSTEAD OF 'ctrl_l' WILL CAUSE THE PROGRAM TO SILENTLY FAIL (if you're trying to use the left ctrl)
+# - shift    ⚠️ WRITING 'shift_l' INSTEAD OF 'shift'  WILL CAUSE THE PROGRAM TO SILENTLY FAIL (yes, it's swapped. it's not my issue.)
+# - alt_l    ⚠️ WRITING 'alt'     INSTEAD OF 'alt_l'  WILL CAUSE THE PROGRAM TO SILENTLY FAIL (if you're trying to use the left alt.)
 # - tab
 # - f1 (up to f20)
 # - home
 # - page_up
 
+# ⚠️ Sadly, ctrl+<number> is unsupported.
+
 # Keybinds:
 # - record: toggles recording
 # - close_program: closes this program
-# - play_latest_macro: plays the latest macro, more specifically, 'macros/latest.bmarco'
+# - play_latest_macro: plays the latest macro, more specifically, 'macros/latest.bmacro'
 # - play_selected_macro: plays the below selected macro.
-# - stop_macro: stops the marco at any moment
+# - stop_macro: stops the macro at any moment
 
-# selected_macro: a path or file name. macro MUST be inside 'macros/'. this is case-sensitive.
+# selected_macro: a path or file name. macro MUST be inside 'macros/'. macro MUST be of .bmacro format. this is case-sensitive.
 # loop (True or False): whether the macro should loop until stopped.
 
 
 keybinds:
   record: ctrl_l+f1
-  close_program: ctrl_l+f2
+  close_program: ctrl_l+f6
   play_latest_macro: ctrl_l+f3
   play_selected_macro: ctrl_l+f4
-  stop_macro: ctrl+f5
+  stop_macro: ctrl_l+f5
 
-selected_macro: 'macros/mycoolmacro.bmacro'
+selected_macro: 'macros/example.bmacro'
 loop: false
 
 # also this can be written as
-# selected_macro: 'mycoolmacro'
+# selected_macro: 'example'
 # or
-# selected_macro: 'mycoolmacro.bmacro'
+# selected_macro: 'example.bmacro'
