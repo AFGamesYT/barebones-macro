@@ -65,6 +65,8 @@ stop_macro_keys = {parse_key(k) for k in config["keybinds"]["stop_macro"].lower(
 
 selected_macro_path = config["selected_macro"]
 loop = config["loop"]
+no_wait = config["playback_speed"]
+playback_speed = config["playback_speed"]
 
 @handles_crash
 def save_macro():
@@ -97,7 +99,8 @@ def play_macro(path):
 
             match command:
                 case "WAIT":
-                    sleep(float(line.split(" ")[1]))
+                    if not no_wait:
+                        sleep(float(line.split(" ")[1])/playback_speed)
                 case "MOVE":
                     m_controller.position = (line.split(" ")[1], line.split(" ")[2])
                 case "CLICK":

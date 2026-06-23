@@ -33,7 +33,11 @@
 
 # selected_macro: a path or file name. macro MUST be inside 'macros/'. macro MUST be of .bmacro format. this is case-sensitive.
 # loop (True or False): whether the macro should loop until stopped.
-
+# no_wait: if enabled, the macro only does actions, it does not wait. if enabled, playback_speed has no effect, because the macro runs as fast as possible.
+# ⚠️ enabling no_wait for macros with mouse movement is not recommended.
+# playback_speed: the speed that the macro will play at. (1 - default, 2 - 2x speed, ...)
+# ⚠️ the higher the playback time, the less reliable and precise the macro becomes.
+# this can also be used to make macros slower.
 
 keybinds:
   record: ctrl_l+f1
@@ -44,6 +48,8 @@ keybinds:
 
 selected_macro: 'macros/example.bmacro'
 loop: false
+no_wait: false
+playback_speed: 1
 
 # also this can be written as
 # selected_macro: 'example'
